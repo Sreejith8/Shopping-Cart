@@ -130,17 +130,6 @@ Ensure you have a MongoDB server running or configure the connection to a MongoD
 - Improve frontend UI with modern frontend frameworks (React/Vue)
 - Implement user email notifications for order status
 
----
-
-## ✨ Demo Screenshots (Optional Section)
-
-*You can add screenshots here showing:*
-
-- Product listing
-- Cart page
-- Order history
-- Admin dashboard
-- User management page (showing "Remove user" option)
 
 ---
 
