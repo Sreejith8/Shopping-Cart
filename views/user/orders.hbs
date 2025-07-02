@@ -1,0 +1,32 @@
+<section>
+    <div class="container mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Pincode</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orderDetails}}
+                <tr>
+                    <th scope="row">{{formatDate this.orderingTime "DD/MM/YY hh:mm A"}}</th>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.deliveryDetails.pincode}}</td>
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.totalAmount}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.orderStatus}}</td>
+                    <td><a href="/view-ordered-products/{{this._id}}" class="btn btn-success">View Products</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

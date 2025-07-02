@@ -1,0 +1,48 @@
+<section>
+    <div class="container mt-4">
+        <table class="table display" id="all-users">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each allUsers}}
+                    <tr>
+                        <td>{{inc @index}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.email}}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="removeUser('{{this._id}}')">Remove</button>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('#all-users').DataTable({
+            lengthChange: false
+        });
+    });
+
+    function removeUser(userId){
+        $.ajax({
+            url : '/admin/remove-user',
+            data : {userId},
+            method : 'post',
+            success : (response)=>{
+                if(response.status){
+                    alert("User removed successfully.");
+                    location.reload();
+                }
+            }
+        })
+    }
+</script>

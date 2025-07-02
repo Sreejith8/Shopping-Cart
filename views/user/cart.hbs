@@ -1,0 +1,42 @@
+<section>
+  <div class="container mt-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">No.</th>
+          <th scope="col">Product</th>
+          <th scope="col">Title</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cartProducts}}
+        <tr>
+          <th scope="row">{{inc @index}}</th>
+          <td><img src="/product-images/{{this.product._id}}.jpg" alt="" style="width: 50px; height: 60px"></td>
+          <td>{{this.product.name}}</td>
+          <td>{{this.product.price}}</td>
+          <td>
+            <button type="button" onclick="changeProductQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)"
+              class="btn btn-secondary">-</button>
+            <span id="{{this.product._id}}">{{this.quantity}}</span>
+            <button type="button" onclick="changeProductQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)"
+              class="btn btn-secondary">+</button>
+          </td>
+          <td><button type="button" onclick="removeProduct('{{this._id}}','{{this.product._id}}')"
+              class="btn btn-danger">Remove</button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container mt-5 mb-5 position-fixed fixed-bottom bg-white py-2">
+  <hr>
+  <div class="float-end me-5">
+    <h3>Total Price : Rs. <span id="total-cart-amount">{{total}}</span>/-</h3>
+    <a href="/place-order" type="button" class="btn btn-success float-end me-5 mt-2">Place Order</a>
+  </div>
+</div>
+</section>

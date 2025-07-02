@@ -1,0 +1,111 @@
+<section>
+    <div class="container mt-5">
+        <form id="place-order-form" action="/place-order">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4">Enter Delivery Address</h3>
+                    <div class="mb-3">
+                        <label for="addressInput" class="form-label">Address</label>
+                        <input type="text" name="address" class="form-control" id="addressInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pincodeInput" class="form-label">Pincode</label>
+                        <input type="text" name="pincode" class="form-control" id="pincodeInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobileInput" class="form-label">Mobile Number</label>
+                        <input type="text" name="mobile" class="form-control" id="mobileInput">
+                    </div>
+                    <input type="text" name="userId" value="{{user._id}}" class="form-control" hidden>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-5 box border border-dark">
+                        <h4>Total Price : Rs.{{total}} /-</h4>
+                        <hr>
+                        <h5>Payment Method</h5>
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="radio" name="payment-method" id="payment-method-cod"
+                                checked value="COD">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                COD
+                            </label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="radio" name="payment-method"
+                                id="payment-method-online" value="ONLINE">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Pay Online
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    $('#place-order-form').submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#place-order-form').serialize(),
+            success: (response) => {
+                if (response.codStatus) {
+                    location.href = '/order-placed';
+                }
+                else {
+                    razorpayPayment(response);
+                }
+            }
+        })
+    })
+
+    function razorpayPayment(orderDetails) {
+        console.log("*****Razorpay payment function is called");
+        var options = {
+            "key": "rzp_test_mOhv9hvNIWx5gT", // Enter the Key ID generated from the Dashboard
+            "amount": orderDetails.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "FounderGram", //your business name
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": orderDetails.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                console.log("***** Inside handler function is going to call");
+                verifyPayment(response,orderDetails);
+            },
+            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+                "name": "Something", //your customer's name
+                "email": "Some.User@example.com",
+                "contact": "9000090000"  //Provide the customer's phone number for better conversion rates 
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayment(response,orderDetails){
+        console.log("*****Verify payment ajax fired");
+        $.ajax({
+            url : '/verify-payment',
+            method : 'post',
+            data : {response,orderDetails},
+            success : (response)=>{
+                if(response.status){
+                    location.href = '/order-placed';
+                }
+            }
+        })
+    }
+</script>

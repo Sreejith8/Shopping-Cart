@@ -1,0 +1,21 @@
+<section>
+    <div class="container col-md-6 mt-5">
+        <form action="/login" method="post">
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" name="email" id="inputEmail" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="inputPassword">
+                <div id="emailHelp" class="form-text"><a href="/signup">Don't have an account ? Signup</a></div>
+            </div>
+            {{#if loginError}}
+            <div class="mb-3">
+                <p class="error text-danger">{{loginError}}</p>
+            </div>
+            {{/if}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</section>
